@@ -14,24 +14,13 @@ const BookDetailsPage = (props) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://appointment-records-default-rtdb.firebaseio.com/appointments.json');
+      const response = await fetch('http://localhost:8080/books/book/' + params.id);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
       const data = await response.json();
-      const loadedBooks = [];
-      for (const key in data) {
-        loadedBooks.push({
-          id: key,
-          title: data[key].title,
-          shortDescription: data[key].shortDescription,
-          detailedDescription: data[key].detailedDescription,
-          releaseDate: data[key].releaseDate,
-          author: data[key].author,
-        });
-      }
-      let currentBook = loadedBooks.find((book) => book.id === params.id);
-      setBook(currentBook);
+      const bookData = data.book;
+      setBook(bookData);
     } catch (error) {
       setError(error.message);
     }
@@ -44,7 +33,7 @@ const BookDetailsPage = (props) => {
 
   return (
     <>
-      {!book && !error && !isLoading && <p>Found no movies.</p>}
+      {!book && !error && !isLoading && <p>Found no books.</p>}
       {book && <BookDetails book={book} />}
       {error && <p>{error}</p>}
       {isLoading && <p>Loading...</p>}

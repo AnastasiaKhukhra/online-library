@@ -1,9 +1,8 @@
 import React from 'react';
 
 import Book from '../Book/Book';
-import classes from './BooksList.module.css';
 
-const MovieList = (props) => {
+const BooksList = (props) => {
 
   return (
     <ul>
@@ -12,6 +11,7 @@ const MovieList = (props) => {
           id={book.id}
           key={book.id}
           title={book.title}
+          imgURL={book.imgURL}
           shortDescription={book.shortDescription}
           detailedDescription={book.detailedDescription}
           releaseDate={book.releaseDate}
@@ -22,4 +22,4 @@ const MovieList = (props) => {
   );
 };
 
-export default MovieList;
+export default BooksList;

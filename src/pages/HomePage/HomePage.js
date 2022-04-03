@@ -1,18 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import classes from './HomePage.module.css';
+import { Button } from '@mui/material';
+import { useStyles } from './HomePage.styles';
 
 const HomePage = (props) => {
+  const styles = useStyles();
 
   return (
-    <div className={classes.goto_form_page}>
-      <h2>Free Online Library</h2>
-      <Link to='/library'>
-        <button variant="outlined">
-          Go to books list
-        </button>
-      </Link>
+    <div className={styles.root}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Free Online Library</h2>
+        <p className={styles.text}>Прянощі — ключ до довголіття та міжгалактичним подорожам. Той, хто контролює прянощі, контролює весь світ. Але прянощі не так-то просто дістати, адже знайти їх можна лише на непривітному Арракісі, повному прихованих та явних загроз. 
+        </p>
+        <Link to='/library' style={{ textDecoration: 'none' }}>
+            <Button variant='contained' style={{
+              borderRadius: 35,
+              backgroundColor: "#c68c53",
+              padding: "10px 20px",
+              fontSize: "14px"
+            }}>
+              Go to books list
+            </Button>
+        </Link>
+      </div>
     </div>
   );
 };

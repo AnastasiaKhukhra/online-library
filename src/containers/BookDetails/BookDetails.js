@@ -1,10 +1,9 @@
 import React from 'react';
 
-import classes from './BookDetails.module.css';
-
 const BookDetails = (props) => {
   return (
     <>
+      <div>{props.book.imgURL}</div>
       <h2>{props.book.title}</h2>
       <h4>{props.book.author}</h4>
       <h5>{props.book.releaseDate}</h5>
