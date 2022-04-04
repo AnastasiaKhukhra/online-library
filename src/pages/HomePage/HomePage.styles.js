@@ -15,17 +15,19 @@ export const useStyles = makeStyles(() => ({
   },
   container: {
     width: '480px',
+    backgroundColor: 'rgb(230, 242, 255, 0.9)',
     marginTop: '50px',
     marginLeft: '20px',
     textAlign: 'center',
     borderRadius: '20px'
   },
   title: {
-    marginTop: 0,
+    marginTop: '10px',
     marginBottom: '10px',
     fontSize: '50px',
   },
   text: {
     fontSize: '20px',
+    padding: '4px',
   },
 }));

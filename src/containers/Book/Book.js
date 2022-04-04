@@ -1,25 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card } from '@mui/material';
-
-import './Book.module.css';
-// import Image from '../Image/Image'
+import { Box, Button, Card, ListItem } from '@mui/material';
+import translations from '../../common/translations';
+import { useStyles } from './Book.styles';
 
 const Book = (props) => {
+  const styles = useStyles();
+
   return (
-    <>
-      <div className="single-post__image">
-        {/* <Image contain={false} imgURL={props.imgURL} /> */}
-        <img src={props.imgURL} alt={props.imgURL} />
-      </div>
-      <Link to={`/book/${props.id}`} style={{ textDecoration: 'none', color: 'black' }}>
-        <Card>
-          {/* <div>{props.imgURL}</div> */}
-          <h2>{`${props.title}, (${props.author})`}</h2>
-          <p>{props.shortDescription}</p>
-        </Card>
-      </Link>
-    </>
+    <ListItem>
+      <Card className={styles.root}>
+        <Link to={`/book/${props.id}`} style={{ textDecoration: 'none', color: 'black' }}>
+          <Box className={styles.container}>
+            <img src={props.image} alt={props.image} className={styles.image} />
+            <Box className={styles.description}>
+              <h2>{`${props.title}, (${props.author})`}</h2>
+              <p>{props.shortDescription}</p>
+            </Box>
+          </Box>
+        </Link>
+        <Box className={styles.button}>
+          <Button
+            variant='outlined'
+            style={{
+              borderRadius: 19,
+              padding: '10px 20px',
+              fontSize: '14px',
+            }}
+            onClick={props.onDelete}
+          >
+            {translations.buttons.delete}
+          </Button>
+        </Box>
+      </Card>
+    </ListItem>
   );
 };
 

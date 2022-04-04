@@ -1,22 +1,21 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import validationSchema from '../../common/validator';
+import translations from '../../common/translations';
 
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 import { useStyles } from './AddBook.styles';
 
 const AddBook = () => {
-  const title = useRef('');
-  const imgURL = useRef('');
-  const shortDescription = useRef('');
-  const detailedDescription = useRef('');
-  const releaseDate = useRef('');
-  const author = useRef('');
+  const image = useRef('');
   const styles = useStyles();
 
   async function addBookHandler(book) {
     const formData = new FormData();
     formData.append('title', book.title);
-    formData.append('image', book.imgURL);
+    if (book.image) { formData.append('image', book.image) };
     formData.append('shortDescription', book.shortDescription);
     formData.append('detailedDescription', book.detailedDescription);
     formData.append('releaseDate', book.releaseDate);
@@ -25,64 +24,92 @@ const AddBook = () => {
       method: 'POST',
       body: formData,
     });
+    if (!response.ok) {
+      console.log(response)
+      throw new Error('Something went wrong!');
+    }
     const data = await response.json();
     console.log(data);
   }
 
-  function submitHandler(event) {
-    event.preventDefault();
-    const book = {
-      title: title.current.value,
-      imgURL: imgURL.current.files[0],
-      shortDescription: shortDescription.current.value,
-      detailedDescription: detailedDescription.current.value,
-      releaseDate: releaseDate.current.value,
-      author: author.current.value,
-    };
-    addBookHandler(book);
-    title.current.value = '';
-    shortDescription.current.value = '';
-    detailedDescription.current.value = '';
-    releaseDate.current.value = '';
-    author.current.value = '';
-  }
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      shortDescription: '',
+      detailedDescription: '',
+      releaseDate: '',
+      author: '',
+    },
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      const book = {
+        title: values.title,
+        image: image.current.files[0],
+        shortDescription: values.shortDescription,
+        detailedDescription: values.detailedDescription,
+        releaseDate: values.releaseDate,
+        author: values.author,
+      };
+      addBookHandler(book);
+      resetForm({ values: '' })
+    },
+  });
 
   return (
-    <div className={styles.root}>
-      <h2>Add new book</h2>
-      <form onSubmit={submitHandler}>
-        <TextField id='title' label='Title' inputRef={title} />
-        <TextField id='openingTextRef' label='Short description' inputRef={shortDescription} />
-        <TextField id='detailedText' label='Detailed description' inputRef={detailedDescription} />
-        <TextField
-          id='releaseDate'
-          type='date'
-          InputProps={{
-            style: { color: 'grey' },
-          }}
-          inputRef={releaseDate}
-        />
-        <TextField id='author' label='Author' inputRef={author} />
-        <TextField
-          id='imgURL'
-          type='file'
-          name='image'
-          InputProps={{
-            style: { color: 'grey' },
-          }}
-          inputRef={imgURL}
-        />
-        <Button type='submit' variant='contained' style={{
-          borderRadius: 35,
-          backgroundColor: "#00cca3",
-          padding: "5px 10px",
-          fontSize: "14px",
-          width: "200px"
-        }}>
-          Add book
-        </Button>
-      </form>
-    </div>
+    <Box className={styles.root}>
+      <Box className={styles.container}>
+        <h2>{translations.buttons.addBook}</h2>
+        <form onSubmit={formik.handleSubmit}>
+          {Object.keys(formik.values).map((name) => (
+            <Box className={styles.textfield} key={name}>
+              <TextField
+                id={name}
+                type={name !== 'releaseDate' ? 'text' : 'date'}
+                label={name !== 'releaseDate' ? translations.form[name] : ''}
+                value={formik.values[name]}
+                onChange={formik.handleChange}
+                error={formik.touched[name] && Boolean(formik.errors[name])}
+                helperText={formik.touched[name] && formik.errors[name]}
+                fullWidth
+              />
+            </Box>
+          ))}
+          <TextField
+            id='image'
+            type='file'
+            name='image'
+            InputProps={{
+              style: { color: 'grey' },
+            }}
+            inputRef={image}
+            fullWidth
+          />
+          <Button type='submit' variant='contained' style={{
+            borderRadius: 35,
+            backgroundColor: '#c68c53',
+            padding: '5px 10px',
+            marginRight: '5px',
+            marginTop: '15px',
+            fontSize: '14px',
+            width: '200px'
+          }}>
+            {translations.buttons.addBook2}
+          </Button>
+          <Link to='/library' style={{ textDecoration: 'none' }}>
+            <Button variant='contained' style={{
+              borderRadius: 35,
+              backgroundColor: '#c68c53',
+              marginTop: '15px',
+              padding: '5px 10px',
+              fontSize: '14px',
+              width: '200px'
+            }}>
+              {translations.buttons.library}
+            </Button>
+          </Link>
+        </form>
+      </Box>
+    </Box>
   );
 };
 

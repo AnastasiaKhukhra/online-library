@@ -5,6 +5,20 @@ export const useStyles = makeStyles(() => ({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    // margin: '0 auto'
+  },
+  container: {
+    width: '450px',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: '20px',
+    marginTop: '20px',
+    borderRadius: '35px'
+  },
+  textfield: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginBottom: '15px',
   },
 }));
